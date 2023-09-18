@@ -141,7 +141,7 @@ def test_get_objective_func(mocker, tuner, mock_data, default_hyperparameters):
 
     mock_train = mocker.patch(
         "src.hyperparameter_tuning.tuner.train_predictor_model",
-        return_value="mock_classifier",
+        return_value="mock_predictor",
     )
     mock_evaluate = mocker.patch(
         "src.hyperparameter_tuning.tuner.evaluate_predictor_model", return_value=0.8
@@ -154,7 +154,7 @@ def test_get_objective_func(mocker, tuner, mock_data, default_hyperparameters):
     mock_train.assert_called_once_with(
         mock_train_X, mock_train_y, default_hyperparameters
     )
-    mock_evaluate.assert_called_once_with("mock_classifier", mock_valid_X, mock_valid_y)
+    mock_evaluate.assert_called_once_with("mock_predictor", mock_valid_X, mock_valid_y)
     assert result == 0.8
 
 

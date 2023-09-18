@@ -29,7 +29,7 @@ class CustomTargetEncoder(BaseEstimator, TransformerMixin):
             self
         """
         if self.target_field not in data.columns:
-            raise Exception(
+            raise ValueError(
                 "Target field not present in data. "
                 f"Expecting target field: {self.target_field}"
                 "Cannot encode target."

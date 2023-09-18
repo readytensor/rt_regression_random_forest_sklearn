@@ -296,7 +296,7 @@ def test_duplicate_feature_names():
     invalid_schema = {
         "title": "test dataset",
         "description": "test dataset",
-        "modelCategory": "binary_classification",
+        "modelCategory": "regression",
         "schemaVersion": 1.0,
         "inputDataFormat": "CSV",
         "id": {"name": "id", "description": "unique identifier."},

@@ -40,10 +40,11 @@ The following is the directory structure of the project:
   - **`prediction/`**: Scripts for the Random Forest regressor model implemented using **Scikit-Learn** library.
   - **`hyperparameter_tuning/`**: for hyperparameter-tuning (HPT) functionality implemented using **Scikit-Optimize** for the model.
   - **`xai/`**: for explainable AI functionality implemented using **Shap** library. This provides local explanations for predictions.
-  - **`serve.py`**: This script is used to serve the model as a REST API using **FastAPI**. It loads the artifacts and creates a FastAPI server to serve the model. It provides 3 endpoints: `/ping`, `/infer`, and `/explain`. The `/ping` endpoint is used to check if the server is running. The `/infer` endpoint is used to make predictions. The `/explain` endpoint is used to get local explanations for the predictions.
+  - **`serve.py`**: This script is used to serve the model as a REST API using **FastAPI**. It loads the artifacts and creates a FastAPI server to serve the model. The endpoint `/ping` is provided to perform a health check on the service. To get online predictions, the endpoint `/infer` is available.
+    - The service also provides an endpoint `/explain` to get local explanations for the predictions.
   - **`serve_utils.py`**: This script contains utility functions used by the `serve.py` script.
   - **`logger.py`**: This script contains the logger configuration using **logging** module.
-  - **`train.py`**: This script is used to train the model. It loads the data, preprocesses it, trains the model, and saves the artifacts in the path `./model_inputs_outputs/model/artifacts/`. It also saves a SHAP explainer object in the path `./model/artifacts/`. When the train task is run with a flag to perform hyperparameter tuning, it also saves the hyperparameter tuning results in the path `./model_inputs_outputs/outputs/hpt_outputs/`.
+  - **`train.py`**: This script is used to train the model. It loads the data, preprocesses it, trains the model, and saves the artifacts in the path `./model_inputs_outputs/model/artifacts/`. When the train task is run with a `-t` flag to perform hyperparameter tuning, it also saves the hyperparameter tuning results in the path `./model_inputs_outputs/outputs/hpt_outputs/`.
   - **`predict.py`**: This script is used to run batch predictions using the trained model. It loads the artifacts and creates and saves the predictions in a file called `predictions.csv` in the path `./model_inputs_outputs/outputs/predictions/`.
   - **`utils.py`**: This script contains utility functions used by the other scripts.
 - **`tests/`**: This directory contains all the tests for the project and associated resources and results.
@@ -69,13 +70,16 @@ In this section we cover the following:
 - How to run the model implementation with Docker
 - How to use the inference service (with or without Docker)
 ### Preparing your data
-- If you plan to run this model implementation on your own binary classification dataset, you will need your training and testing data in a CSV format. Also, you will need to create a schema file as per the Ready Tensor specifications. The schema is in JSON format, and it's easy to create. You can use the example schema file provided in the `examples` directory as a template.
+- If you plan to run this model implementation on your own regression dataset, you will need your training and testing data in a CSV format. Also, you will need to create a schema file as per the Ready Tensor specifications. The schema is in JSON format, and it's easy to create. You can use the example schema file provided in the `examples` directory as a template.
 ### To run locally (without Docker)
 - Create your virtual environment and install dependencies listed in `requirements.txt` which is inside the `requirements` directory.
 - Move the three example files (`smoke_test_regression_schema.json`, `smoke_test_regression_train.csv` and `smoke_test_regression_test.csv`) in the `examples` directory into the `./model_inputs_outputs/inputs/schema`, `./model_inputs_outputs/inputs/data/training` and `./model_inputs_outputs/inputs/data/testing` folders, respectively (or alternatively, place your custom dataset files in the same locations).
-- Run the script `src/train.py` to train the random forest regressor model. This will save the model artifacts, including the preprocessing pipeline and label encoder, in the path `./model_inputs_outputs/model/artifacts/`. If you want to run with hyperparameter tuning then include the `-t` flag. This will also save the hyperparameter tuning results in the path `./model_inputs_outputs/outputs/hpt_outputs/`.
+- Run the script `src/train.py` to train the regressor model. This will save the model artifacts, including the preprocessing pipeline and label encoder, in the path `./model_inputs_outputs/model/artifacts/`. If you want to run with hyperparameter tuning then include the `-t` flag. This will also save the hyperparameter tuning results in the path `./model_inputs_outputs/outputs/hpt_outputs/`.
 - Run the script `src/predict.py` to run batch predictions using the trained model. This script will load the artifacts and create and save the predictions in a file called `predictions.csv` in the path `./model_inputs_outputs/outputs/predictions/`.
-- Run the script `src/serve.py` to start the inference service, which can be queried using the `/ping`, `/infer` and `/explain` endpoints. The service runs on port 8080.
+- Run the script `src/serve.py` to start the inference service. The service runs on port 8080.
+  - Use `/ping` to perform health check.
+  - Use `/infer` to get online predictions.
+  - Use `/explain` to get local explanations for predictions.
 ### To run with Docker
 1. Set up a bind mount on host machine: It needs to mirror the structure of the `model_inputs_outputs` directory. Place the train data file in the `model_inputs_outputs/inputs/data/training` directory, the test data file in the `model_inputs_outputs/inputs/data/testing` directory, and the schema file in the `model_inputs_outputs/inputs/schema` directory.
 2. Build the image. You can use the following command: <br/>
@@ -102,7 +106,10 @@ In this section we cover the following:
    This will load the artifacts and create and save the predictions in a file called `predictions.csv` in the path `model_inputs_outputs/outputs/predictions/` in the bind mount.
 6. To run the inference service, issue the following command on the running container: <br/>
    `docker run -p 8080:8080 -v <path_to_mount_on_host>/model_inputs_outputs:/opt/model_inputs_outputs regressor_img serve` <br/>
-   This starts the service on port 8080. You can query the service using the `/ping`, `/infer` and `/explain` endpoints. More information on the requests/responses on the endpoints is provided below.
+   This starts the service on port 8080.
+   - You can perform health check using `/ping`
+   - Get online predictions by using `/infer`
+   - Use `/explain` for getting local explanations. More information on the requests/responses on the endpoints is provided below.
 ### Using the Inference Service
 #### Getting Predictions
 To get predictions for a single sample, use the following command:

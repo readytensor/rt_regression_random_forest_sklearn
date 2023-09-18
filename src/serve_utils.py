@@ -150,7 +150,7 @@ def create_predictions_response(
 
     Args:
         transformed_data (pd.DataFrame): The transfomed input data for prediction.
-        data_schema (Any): An instance of the BinaryClassificationSchema.
+        data_schema (Any): An instance of the RegressionSchema.
         request_id (str): Unique request id for logging and tracking
         prediction_field_name (str): Name of the prediction field
 

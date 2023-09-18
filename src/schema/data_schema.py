@@ -43,8 +43,7 @@ class RegressionSchema:
 
         Returns:
             str: The category of the machine learning model
-                (e.g., binary_classification, multi-class_classification,
-                regression, object_detection, etc.).
+                (e.g., regression, binary_classification, etc.).
         """
         return self.schema["modelCategory"]
 

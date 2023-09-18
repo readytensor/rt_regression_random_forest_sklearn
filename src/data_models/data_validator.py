@@ -93,7 +93,7 @@ def validate_data(
     Args:
         data (pd.DataFrame): The train or test data to validate.
         data_schema (RegressionSchema): An instance of
-            inaryClassificationSchema.
+            RegressionSchema.
         is_train (bool): Whether the data is for training or not.
 
     Returns:

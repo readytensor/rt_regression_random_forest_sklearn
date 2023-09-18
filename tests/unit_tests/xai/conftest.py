@@ -21,7 +21,7 @@ def num_samples():
 @pytest.fixture
 def transformed_data(target_field_name, num_samples) -> Tuple[pd.DataFrame, pd.Series]:
     """
-    Create a binary classification dataset using sklearn's make_regression.
+    Create a regression dataset using sklearn's make_regression.
 
     Returns:
         Tuple[pd.DataFrame, pd.Series]: A tuple with two elements.
@@ -35,6 +35,7 @@ def transformed_data(target_field_name, num_samples) -> Tuple[pd.DataFrame, pd.S
         n_informative=2,
         random_state=42,
         shuffle=True,
+        coef=False
     )
     # Convert to pandas DataFrame and Series
     features_df = pd.DataFrame(

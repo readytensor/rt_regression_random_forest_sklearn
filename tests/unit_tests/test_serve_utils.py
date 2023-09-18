@@ -64,8 +64,8 @@ def test_create_predictions_response(predictions_df, schema_provider, request_id
     Args:
         predictions_df (pd.DataFrame): A fixture providing a DataFrame of model
             predictions.
-        schema_provider (BinaryClassificationSchema): A fixture providing an instance
-            of the BinaryClassificationSchema.
+        schema_provider (RegressionSchema): A fixture providing an instance
+            of the RegressionSchema.
 
     Returns:
         None

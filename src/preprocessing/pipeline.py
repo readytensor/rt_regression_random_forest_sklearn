@@ -24,8 +24,8 @@ def get_preprocess_pipeline(data_schema: Any, preprocessing_config: dict) -> Pip
     Create a preprocessor pipeline to transform data as defined by data_schema.
 
     Args:
-        data_schema (BinaryClassificationSchema): An instance of the
-            BinaryClassificationSchema.
+        data_schema (RegressionSchema): An instance of the
+            RegressionSchema.
         preprocessing_config (dict): dictionary for preprocessing configuration.
     Returns:
         Pipeline: A pipeline to transform data as defined by data_schema.

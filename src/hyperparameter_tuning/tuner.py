@@ -125,9 +125,9 @@ class HyperParameterTuner:
             # convert list of HP values into a dictionary of name:val pairs
             hyperparameters = dict(zip(self.hyperparameter_names, trial))
             # train model
-            classifier = train_predictor_model(train_X, train_y, hyperparameters)
+            predictor = train_predictor_model(train_X, train_y, hyperparameters)
             # evaluate the model
-            score = round(evaluate_predictor_model(classifier, valid_X, valid_y), 6)
+            score = round(evaluate_predictor_model(predictor, valid_X, valid_y), 6)
             if np.isnan(score) or math.isinf(score):
                 # sometimes loss becomes inf/na, so use a large "bad" value
                 score = 1.0e6 if self.is_minimize else -1.0e6

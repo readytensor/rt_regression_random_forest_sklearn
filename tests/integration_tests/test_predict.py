@@ -39,7 +39,7 @@ def test_integration_run_batch_predictions_without_hpt(
         sample_test_data (pd.DataFrame): Sample DataFrame for testing.
         schema_provider (Any): Loaded schema provider.
         resources_paths_dict (dict): Dictionary containing the paths to the
-            resources files such as trained models, encoders, and explainers.
+            resources files such as trained models, encoders.
         model_config (dict): Dictionary containing the model configuration.
     """
     # extract paths to all config files
@@ -51,14 +51,12 @@ def test_integration_run_batch_predictions_without_hpt(
         "default_hyperparameters_file_path"
     ]
     hpt_specs_file_path = config_file_paths_dict["hpt_specs_file_path"]
-    explainer_config_file_path = config_file_paths_dict["explainer_config_file_path"]
 
     # Create temporary paths for all outputs/artifacts
     saved_schema_dir_path = resources_paths_dict["saved_schema_dir_path"]
     preprocessing_dir_path = resources_paths_dict["preprocessing_dir_path"]
     predictor_dir_path = resources_paths_dict["predictor_dir_path"]
     hpt_results_dir_path = resources_paths_dict["hpt_results_dir_path"]
-    explainer_dir_path = resources_paths_dict["explainer_dir_path"]
 
     # Run the training process without hyperparameter tuning
     run_tuning = False
@@ -74,8 +72,6 @@ def test_integration_run_batch_predictions_without_hpt(
         run_tuning=run_tuning,
         hpt_specs_file_path=hpt_specs_file_path if run_tuning else None,
         hpt_results_dir_path=hpt_results_dir_path if run_tuning else None,
-        explainer_config_file_path=explainer_config_file_path,
-        explainer_dir_path=explainer_dir_path,
     )
 
     # Get temporary path for prediction

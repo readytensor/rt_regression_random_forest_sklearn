@@ -31,7 +31,7 @@ def test_run_training(
         config_file_paths_dict (dict): Dictionary containing the paths to the
             configuration files.
         resources_paths_dict (dict): Dictionary containing the paths to the
-            resources files such as trained models, encoders, and explainers.
+            resources files such as trained models, encoders.
     """
     # extract paths to all config files
     model_config_file_path = config_file_paths_dict["model_config_file_path"]
@@ -42,14 +42,12 @@ def test_run_training(
         "default_hyperparameters_file_path"
     ]
     hpt_specs_file_path = config_file_paths_dict["hpt_specs_file_path"]
-    explainer_config_file_path = config_file_paths_dict["explainer_config_file_path"]
 
     # Create temporary paths for all outputs/artifacts
     saved_schema_dir_path = resources_paths_dict["saved_schema_dir_path"]
     preprocessing_dir_path = resources_paths_dict["preprocessing_dir_path"]
     predictor_dir_path = resources_paths_dict["predictor_dir_path"]
     hpt_results_dir_path = resources_paths_dict["hpt_results_dir_path"]
-    explainer_dir_path = resources_paths_dict["explainer_dir_path"]
 
     # Run the training process without tuning
     run_training(
@@ -64,14 +62,11 @@ def test_run_training(
         run_tuning=run_tuning,
         hpt_specs_file_path=hpt_specs_file_path if run_tuning else None,
         hpt_results_dir_path=hpt_results_dir_path if run_tuning else None,
-        explainer_config_file_path=explainer_config_file_path,
-        explainer_dir_path=explainer_dir_path,
     )
 
     # Assert that the model artifacts are saved in the correct paths
     assert len(os.listdir((saved_schema_dir_path))) >= 1
     assert len(os.listdir((preprocessing_dir_path))) >= 1
     assert len(os.listdir((predictor_dir_path))) >= 1
-    assert len(os.listdir((explainer_dir_path))) >= 1
     if run_tuning:
         assert len(os.listdir((hpt_results_dir_path))) >= 1

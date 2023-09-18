@@ -182,8 +182,8 @@ def test_validate_data_duplicate_ids_train_data(
                                           duplicate IDs.
     """
     duplicate_id_data = sample_train_data.copy()
-    duplicate_id_data = duplicate_id_data.append(
-        duplicate_id_data.iloc[0], ignore_index=True
+    duplicate_id_data = pd.concat(
+        [duplicate_id_data, duplicate_id_data.iloc[[0]]], ignore_index=True
     )
     with pytest.raises(ValueError):
         validate_data(duplicate_id_data, schema_provider, True)
